@@ -3,7 +3,7 @@
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 
-#include "MediaPlayerPlaylist.h"
+#include "Playlist.h"
 
 #include <String.h>
 #include <ColumnTypes.h>
@@ -13,9 +13,9 @@
 #include <Volume.h>
 #include <VolumeRoster.h>
 
-class Playlist : public BListView {
+class PlaylistView : public BListView {
 public:
-	Playlist();
+	PlaylistView();
 	
 	virtual void AttachedToWindow();
 	virtual void MessageReceived(BMessage*);
@@ -28,37 +28,37 @@ public:
 	virtual void MessageReceived(BMessage*);
 };
 
-BListView* MediaPlayerPlaylist::pl = NULL;
-BColumnListView* MediaPlayerPlaylist::plc = NULL;
+BListView* Playlist::pl = NULL;
+BColumnListView* Playlist::plc = NULL;
 
-void MediaPlayerPlaylist::Initialize() {
-	pl = new Playlist();
+void Playlist::Initialize() {
+	pl = new PlaylistView();
 	plc = new PlaylistContent();
 }
 
-BListView* MediaPlayerPlaylist::GetPlaylist() {
+BListView* Playlist::GetPlaylist() {
 	return pl;
 }
 
-BColumnListView* MediaPlayerPlaylist::GetPlaylistContent() {
+BColumnListView* Playlist::GetPlaylistContent() {
 	return plc;
 }
 
-Playlist::Playlist()
+PlaylistView::PlaylistView()
 		 : BListView("Playlist") {
 	AddItem(new BStringItem("Library"), 0);
 }
 
-void Playlist::AttachedToWindow() {
+void PlaylistView::AttachedToWindow() {
 	SetSelectionMessage(new BMessage(M_PLAYLIST_ON_SELECT));
-	SetTarget(MediaPlayerPlaylist::GetPlaylistContent());
+	SetTarget(Playlist::GetPlaylistContent());
 	
 	Select(0);
 
 	BListView::AttachedToWindow();
 }
 
-void Playlist::MessageReceived(BMessage* message) {
+void PlaylistView::MessageReceived(BMessage* message) {
 	switch (message->what) {
 		case M_PLAYLIST_ON_SELECT: {
 		}

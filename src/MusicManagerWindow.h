@@ -3,14 +3,14 @@
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 
-#ifndef MediaPlayerWindow_H
-#define MediaPlayerWindow_H
+#ifndef MusicManagerWindow_H
+#define MusicManagerWindow_H
 
 #include <Window.h>
 
-class MediaPlayerWindow : public BWindow {
+class MusicManagerWindow : public BWindow {
 public:
-	MediaPlayerWindow();
+	MusicManagerWindow();
 };
 
-#endif // MediaPlayerWindow_H
+#endif // MusicManagerWindow_H

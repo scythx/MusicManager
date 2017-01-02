@@ -3,8 +3,8 @@
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 
-#ifndef MediaPlayerPlaylist_H
-#define MediaPlayerPlaylist_H
+#ifndef Playlist_H
+#define Playlist_H
 
 #include <ListView.h>
 #include <ColumnListView.h>
@@ -13,7 +13,7 @@ enum {
 	M_PLAYLIST_ON_SELECT = 'ploa'
 };
 
-class MediaPlayerPlaylist {
+class Playlist {
 public:
 	static void Initialize();
 	static BListView* GetPlaylist();
@@ -22,8 +22,8 @@ public:
 	static BListView* pl;
 	static BColumnListView* plc;
 private:
-	MediaPlayerPlaylist();
-	~MediaPlayerPlaylist();
+	Playlist();
+	~Playlist();
 };
 
-#endif // MediaPlayerPlaylist_H
+#endif // Playlist_H
