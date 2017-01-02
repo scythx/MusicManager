@@ -1,45 +1,81 @@
 #include "MediaPlayerPlaylist.h"
 
-#include <fs_attr.h>
-#include <Node.h>
 #include <String.h>
 #include <ColumnTypes.h>
-#include <ColumnListView.h>
+#include <fs_attr.h>
+#include <Node.h>
 #include <Query.h>
 #include <Volume.h>
 #include <VolumeRoster.h>
 
-BColumnListView* MediaPlayerPlaylist::view = NULL;
+class Playlist : public BListView {
+public:
+	Playlist();
+	
+	virtual void AttachedToWindow();
+	virtual void MessageReceived(BMessage*);
+};
 
-MediaPlayerPlaylist::MediaPlayerPlaylist() 
-					: BColumnListView("PlaylistView", B_FANCY_BORDER) {
-	AddColumn(new BStringColumn("Title", 50, 50, 300,B_TRUNCATE_END), 0);
-//	AddColumn(new BStringColumn("Ratings", 50, 50, 300,B_TRUNCATE_END), 1);
-}
+class PlaylistContent : public BColumnListView {
+public:
+	PlaylistContent();
+	
+	virtual void MessageReceived(BMessage*);
+};
 
-MediaPlayerPlaylist::~MediaPlayerPlaylist() {
-
-}
+BListView* MediaPlayerPlaylist::pl = NULL;
+BColumnListView* MediaPlayerPlaylist::plc = NULL;
 
 void MediaPlayerPlaylist::Initialize() {
-	if (view != NULL) {
-		delete view;
-	}
-	view = new MediaPlayerPlaylist();
+	pl = new Playlist();
+	plc = new PlaylistContent();
 }
 
-void MediaPlayerPlaylist::Exit() {
-//	delete view;
-//	view = NULL;
+BListView* MediaPlayerPlaylist::GetPlaylist() {
+	return pl;
 }
 
 BColumnListView* MediaPlayerPlaylist::GetPlaylistContent() {
-	return view;
+	return plc;
 }
 
-void MediaPlayerPlaylist::MessageReceived(BMessage* msg) {
-	switch (msg->what) {
-		case 'aaaa': {
+Playlist::Playlist()
+		 : BListView("Playlist") {
+	AddItem(new BStringItem("Default"), 0);
+}
+
+void Playlist::AttachedToWindow() {
+	SetSelectionMessage(new BMessage(M_PLAYLIST_ON_SELECT));
+	SetTarget(MediaPlayerPlaylist::GetPlaylistContent());
+	
+	Select(0);
+
+	BListView::AttachedToWindow();
+}
+
+void Playlist::MessageReceived(BMessage* message) {
+	switch (message->what) {
+		case M_PLAYLIST_ON_SELECT: {
+		}
+		default: {
+			BListView::MessageReceived(message);
+		}break;
+	}
+}
+
+PlaylistContent::PlaylistContent()
+		 : BColumnListView("PlaylistContent", B_FANCY_BORDER) {
+	AddColumn(new BStringColumn("Title", 50, 50, 300,B_TRUNCATE_END), 0);
+	AddColumn(new BStringColumn("Artist", 50, 50, 300,B_TRUNCATE_END), 1);
+	AddColumn(new BStringColumn("Album", 50, 50, 300,B_TRUNCATE_END), 2);
+	AddColumn(new BStringColumn("Genre", 50, 50, 300,B_TRUNCATE_END), 3);
+	AddColumn(new BStringColumn("Years", 50, 50, 300,B_TRUNCATE_END), 4);
+	AddColumn(new BStringColumn("Rating", 50, 50, 300,B_TRUNCATE_END), 5);
+}
+
+void PlaylistContent::MessageReceived(BMessage* message) {
+	switch (message->what) {
+		case M_PLAYLIST_ON_SELECT: {
 			Clear();
 			BVolumeRoster volRoster;
 			BVolume bootVolume;
@@ -82,7 +118,7 @@ void MediaPlayerPlaylist::MessageReceived(BMessage* msg) {
 			}
 		}
 		default: {
-			BColumnListView::MessageReceived(msg);
+			BColumnListView::MessageReceived(message);
 		}break;
-	}
+	}	
 }

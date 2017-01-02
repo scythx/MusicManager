@@ -6,7 +6,6 @@
 class MediaPlayerWindow : public BWindow {
 public:
 	MediaPlayerWindow();
-	~MediaPlayerWindow();
 };
 
 #endif // MediaPlayerWindow_H

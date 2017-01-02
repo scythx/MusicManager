@@ -1,22 +1,24 @@
 #ifndef MediaPlayerPlaylist_H
 #define MediaPlayerPlaylist_H
 
+#include <ListView.h>
 #include <ColumnListView.h>
 
-//class PlaylistContent;
+enum {
+	M_PLAYLIST_ON_SELECT = 'ploa'
+};
 
-class MediaPlayerPlaylist : public BColumnListView {
+class MediaPlayerPlaylist {
 public:
 	static void Initialize();
-	static void Exit();
+	static BListView* GetPlaylist();
 	static BColumnListView* GetPlaylistContent();
 
-	static BColumnListView* view;
+	static BListView* pl;
+	static BColumnListView* plc;
 private:
 	MediaPlayerPlaylist();
 	~MediaPlayerPlaylist();
-	
-	virtual void MessageReceived(BMessage*);
 };
 
 #endif // MediaPlayerPlaylist_H
