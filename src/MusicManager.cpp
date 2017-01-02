@@ -3,20 +3,20 @@
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 
-#include "MediaPlayer.h"
+#include "MusicManager.h"
 
 int main(int argc, char *argv[]) {
-	MediaPlayer mp;
+	MusicManager mp;
 	mp.Run();
 	
 	return 0;
 }
 
-MediaPlayer::MediaPlayer() : BApplication("application/x-vnd.Haiku-MediaPlayer") {
-	mpWindow = new MediaPlayerWindow();
+MusicManager::MusicManager() : BApplication("application/x-vnd.Haiku-MusicManager") {
+	mpWindow = new MusicManagerWindow();
 	mpWindow->Show();
 }
 
-MediaPlayer::~MediaPlayer() {
+MusicManager::~MusicManager() {
 	delete mpWindow;
 }

@@ -5,7 +5,7 @@
 ## architecture of Haiku.
 
 # The name of the binary.
-NAME = MediaPlayer
+NAME = ../bin/MusicPlayer
 
 # The type of binary, must be one of:
 #	APP:	Application
@@ -29,9 +29,9 @@ APP_MIME_SIG =
 #	same name (source.c or source.cpp) are included from different directories.
 #	Also note that spaces in folder names do not work well with this Makefile.
 SRCS = \
-	 src/MediaPlayerPlaylist.cpp  \
-	 src/MediaPlayer.cpp  \
-	 src/MediaPlayerWindow.cpp  \
+	 src/Playlist.cpp  \
+	 src/MusicManager.cpp  \
+	 src/MusicManagerWindow.cpp  \
 
 
 #	Specify the resource definition files to use. Full or relative paths can be
@@ -46,6 +46,12 @@ RSRCS = \
 
 # End Pe/Eddie support.
 # @<-src@ 
+#%}
+
+#%}
+
+#%}
+
 #%}
 
 #%}
