@@ -24,21 +24,15 @@ MediaPlayerWindow::MediaPlayerWindow()
 
 	BView* mpView = new BView("mpView", B_WILL_DRAW);	
 
-	BButton* refresh = new BButton("refresh", "Refresh", new BMessage(M_PLAYLIST_ON_SELECT));
 	BLayoutBuilder::Group<>(mpView, B_HORIZONTAL)
 		.SetInsets(10)
 		.Add(MediaPlayerPlaylist::GetPlaylist())
 		.AddGroup(B_VERTICAL, B_USE_DEFAULT_SPACING, 2)
 			.Add(MediaPlayerPlaylist::GetPlaylistContent())
-			.AddGrid()
-				.AddGlue(0, 0)
-				.Add(refresh, 1, 0)
-			.End()
 		.End()
 	.End();
 	BLayoutBuilder::Group<>(this, B_VERTICAL, 0.0f)
 		.SetInsets(0)
 		.Add(mpView)
 	.End();
-	refresh->SetTarget(MediaPlayerPlaylist::GetPlaylistContent());
 }

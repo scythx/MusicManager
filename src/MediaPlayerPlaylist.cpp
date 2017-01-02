@@ -46,7 +46,7 @@ BColumnListView* MediaPlayerPlaylist::GetPlaylistContent() {
 
 Playlist::Playlist()
 		 : BListView("Playlist") {
-	AddItem(new BStringItem("Default"), 0);
+	AddItem(new BStringItem("Library"), 0);
 }
 
 void Playlist::AttachedToWindow() {
