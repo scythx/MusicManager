@@ -5,33 +5,33 @@
 
 #include "Playlist.h"
 
+#include <cstdlib>
+
 #include <String.h>
-#include <ColumnTypes.h>
-#include <fs_attr.h>
-#include <Node.h>
-#include <Query.h>
-#include <Volume.h>
-#include <VolumeRoster.h>
+
+#include "internal/PlaylistContentRow.h"
 
 class PlaylistView : public BListView {
 public:
 	PlaylistView();
 	
 	virtual void AttachedToWindow();
-	virtual void MessageReceived(BMessage*);
 };
 
 class PlaylistContent : public BColumnListView {
 public:
 	PlaylistContent();
+	~PlaylistContent();
 	
+	virtual void AttachedToWindow();
 	virtual void MessageReceived(BMessage*);
 };
 
 BListView* Playlist::pl = NULL;
 BColumnListView* Playlist::plc = NULL;
+std::vector<entry_ref> Playlist::library;
 
-void Playlist::Initialize() {
+void Playlist::Init() {
 	pl = new PlaylistView();
 	plc = new PlaylistContent();
 }
@@ -46,6 +46,8 @@ BColumnListView* Playlist::GetPlaylistContent() {
 
 PlaylistView::PlaylistView()
 		 : BListView("Playlist") {
+//	Library contains music from your computer
+//	Another index would become playlist
 	AddItem(new BStringItem("Library"), 0);
 }
 
@@ -58,16 +60,6 @@ void PlaylistView::AttachedToWindow() {
 	BListView::AttachedToWindow();
 }
 
-void PlaylistView::MessageReceived(BMessage* message) {
-	switch (message->what) {
-		case M_PLAYLIST_ON_SELECT: {
-		}
-		default: {
-			BListView::MessageReceived(message);
-		}break;
-	}
-}
-
 PlaylistContent::PlaylistContent()
 		 : BColumnListView("PlaylistContent", B_FANCY_BORDER) {
 	AddColumn(new BStringColumn("Title", 50, 50, 300,B_TRUNCATE_END), 0);
@@ -78,49 +70,30 @@ PlaylistContent::PlaylistContent()
 	AddColumn(new BStringColumn("Rating", 50, 50, 300,B_TRUNCATE_END), 5);
 }
 
+PlaylistContent::~PlaylistContent() {
+
+}
+
+void PlaylistContent::AttachedToWindow() {
+
+}
+
 void PlaylistContent::MessageReceived(BMessage* message) {
 	switch (message->what) {
 		case M_PLAYLIST_ON_SELECT: {
 			Clear();
-			BVolumeRoster volRoster;
-			BVolume bootVolume;
-			volRoster.GetBootVolume(&bootVolume);
-
-			BQuery query;		
-			query.SetVolume(&bootVolume);
-
-			query.PushAttr("name");
-			query.PushString("*");
-			query.PushOp(B_CONTAINS);
-
-			query.PushAttr("Media:Title");
-			query.PushString("*");
-			query.PushOp(B_CONTAINS);
-			query.PushOp(B_OR);
-
-			query.PushAttr("Audio:Artist");
-			query.PushString("*");
-			query.PushOp(B_CONTAINS);
-			query.PushOp(B_OR);
-
-			query.PushAttr("Audio:Album");
-			query.PushString("*");
-			query.PushOp(B_CONTAINS);
-			query.PushOp(B_OR);
-
-			query.PushAttr("BEOS:TYPE");
-			query.PushString("audio/");
-			query.PushOp(B_BEGINS_WITH);
-			query.PushOp(B_AND);
-	
-			if (query.Fetch() == B_OK) {
-				entry_ref ref;
-				while (query.GetNextRef(&ref) == B_OK) {
-					BRow* row = new BRow();
-					AddRow(row);
-					row->SetField(new BStringField(ref.name), 0);		
-				}
+			switch (Playlist::GetPlaylist()->CurrentSelection()) {
+				case 0: {
+					for (std::vector<entry_ref>::iterator it = Playlist::library.begin(); it != Playlist::library.end(); it++) {
+						BRow* row = new PlaylistContentRow(*it);
+						AddRow(row);
+					}
+				}break;
+				default: {
+					// Playlist TODO
+				}break;
 			}
+			
 		}
 		default: {
 			BColumnListView::MessageReceived(message);

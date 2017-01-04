@@ -5,6 +5,10 @@
 
 #include "MusicManager.h"
 
+#include "Control.h"
+#include "Playlist.h"
+#include "Query.h"
+
 int main(int argc, char *argv[]) {
 	MusicManager mp;
 	mp.Run();
@@ -13,6 +17,9 @@ int main(int argc, char *argv[]) {
 }
 
 MusicManager::MusicManager() : BApplication("application/x-vnd.Haiku-MusicManager") {
+	Playlist::Init();
+	Query::Init();
+
 	mpWindow = new MusicManagerWindow();
 	mpWindow->Show();
 }

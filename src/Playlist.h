@@ -6,8 +6,12 @@
 #ifndef Playlist_H
 #define Playlist_H
 
+#include <Entry.h>
 #include <ListView.h>
+#include <ColumnTypes.h>
 #include <ColumnListView.h>
+
+#include <vector>
 
 enum {
 	M_PLAYLIST_ON_SELECT = 'ploa'
@@ -15,12 +19,14 @@ enum {
 
 class Playlist {
 public:
-	static void Initialize();
+	static void Init();
 	static BListView* GetPlaylist();
 	static BColumnListView* GetPlaylistContent();
 
 	static BListView* pl;
 	static BColumnListView* plc;
+
+	static std::vector<entry_ref> library;
 private:
 	Playlist();
 	~Playlist();

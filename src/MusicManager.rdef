@@ -1,3 +1,5 @@
+# All icons provided by Michele Frau (Zumi)
+
 resource app_signature "application/x-vnd.Haiku-MusicManager";
 
 resource app_flags B_SINGLE_LAUNCH;
@@ -12,4 +14,16 @@ resource app_version {
 
 	short_info = "MusicManager",
 	long_info = "A music manager application for Haiku"
+};
+
+resource(1, "playback_start_enabled") #'VICN' array {
+	$"6E6369660304006603005900020006020000003C6000C000000000004C000048"
+	$"A0000080FF80FF00B200010A03463524B3CB2448030A00010030222201178322"
+	$"040A0101001001178322040A02010000"
+};
+
+resource(2, "playback_start_disabled") #'VICN' array {
+	$"6E636966030400660500020016020000003C6000C000000000004C000048A000"
+	$"0080FF28010A03463524B3CB2448030A00010030222201178322040A01010010"
+	$"01178322040A02010000"
 };
