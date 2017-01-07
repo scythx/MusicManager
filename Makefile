@@ -29,6 +29,10 @@ APP_MIME_SIG =
 #	same name (source.c or source.cpp) are included from different directories.
 #	Also note that spaces in folder names do not work well with this Makefile.
 SRCS = \
+	 src/internal/ArtworkView.cpp  \
+	 src/Control.cpp  \
+	 src/internal/ControlBox.cpp  \
+	 src/internal/PlayButton.cpp  \
 	 src/internal/PlaylistContentRow.cpp  \
 	 src/MusicManager.cpp  \
 	 src/MusicManagerWindow.cpp  \
@@ -75,6 +79,12 @@ RSRCS = \
 
 #%}
 
+#%}
+
+#%}
+
+#%}
+
 #	Specify libraries to link against.
 #	There are two acceptable forms of library specifications:
 #	-	if your library follows the naming pattern of libXXX.so or libXXX.a,
@@ -87,7 +97,7 @@ RSRCS = \
 #	- 	if your library does not follow the standard library naming scheme,
 #		you need to specify the path to the library and it's name.
 #		(e.g. for mylib.a, specify "mylib.a" or "path/mylib.a")
-LIBS = $(STDCPPLIBS) be columnlistview translation game
+LIBS = $(STDCPPLIBS) be columnlistview translation media tag musicbrainz5
 
 #	Specify additional paths to directories following the standard libXXX.so
 #	or libXXX.a naming scheme. You can specify full paths or paths relative
@@ -99,7 +109,7 @@ LIBPATHS =
 #	Additional paths to look for system headers. These use the form
 #	"#include <header>". Directories that contain the files in SRCS are
 #	NOT auto-included here.
-SYSTEM_INCLUDE_PATHS = /system/develop/headers/private/interface/
+SYSTEM_INCLUDE_PATHS = /system/develop/headers/private/interface/ /system/develop/headers/taglib/
 
 #	Additional paths paths to look for local headers. These use the form
 #	#include "header". Directories that contain the files in SRCS are
@@ -137,7 +147,7 @@ SYMBOLS :=
 DEBUGGER := 
 
 #	Specify any additional compiler flags to be used.
-COMPILER_FLAGS = 
+COMPILER_FLAGS := $(shell taglib-config --cflags)
 
 #	Specify any additional linker flags to be used.
 LINKER_FLAGS = 

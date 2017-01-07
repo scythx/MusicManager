@@ -17,6 +17,7 @@ int main(int argc, char *argv[]) {
 }
 
 MusicManager::MusicManager() : BApplication("application/x-vnd.Haiku-MusicManager") {
+	Control::Init();
 	Playlist::Init();
 	Query::Init();
 

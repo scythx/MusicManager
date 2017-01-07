@@ -28,6 +28,7 @@ MusicManagerWindow::MusicManagerWindow()
 			.Add(Playlist::GetPlaylist())
 			.Add(Playlist::GetPlaylistContent())
 		.End()
+		.Add(Control::GetControlBox())
 	.End();
 	BLayoutBuilder::Group<>(this, B_VERTICAL, 0.0f)
 		.SetInsets(0)

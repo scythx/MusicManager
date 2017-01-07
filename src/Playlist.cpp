@@ -8,8 +8,9 @@
 #include <cstdlib>
 
 #include <String.h>
+#include <Messenger.h>
 
-#include "internal/PlaylistContentRow.h"
+#include "Control.h"
 
 class PlaylistView : public BListView {
 public:
@@ -29,6 +30,7 @@ public:
 
 BListView* Playlist::pl = NULL;
 BColumnListView* Playlist::plc = NULL;
+PlaylistContentRow* Playlist::CurrentContentSelection = NULL;
 std::vector<entry_ref> Playlist::library;
 
 void Playlist::Init() {
@@ -48,6 +50,9 @@ PlaylistView::PlaylistView()
 		 : BListView("Playlist") {
 //	Library contains music from your computer
 //	Another index would become playlist
+	SetExplicitMinSize(BSize(120, B_SIZE_UNSET));
+	SetExplicitMaxSize(BSize(120, B_SIZE_UNSET));
+
 	AddItem(new BStringItem("Library"), 0);
 }
 
@@ -62,12 +67,13 @@ void PlaylistView::AttachedToWindow() {
 
 PlaylistContent::PlaylistContent()
 		 : BColumnListView("PlaylistContent", B_FANCY_BORDER) {
-	AddColumn(new BStringColumn("Title", 50, 50, 300,B_TRUNCATE_END), 0);
-	AddColumn(new BStringColumn("Artist", 50, 50, 300,B_TRUNCATE_END), 1);
-	AddColumn(new BStringColumn("Album", 50, 50, 300,B_TRUNCATE_END), 2);
-	AddColumn(new BStringColumn("Genre", 50, 50, 300,B_TRUNCATE_END), 3);
-	AddColumn(new BStringColumn("Years", 50, 50, 300,B_TRUNCATE_END), 4);
-	AddColumn(new BStringColumn("Rating", 50, 50, 300,B_TRUNCATE_END), 5);
+	AddColumn(new BIntegerColumn("Track", 100, 100, 300), 0);
+	AddColumn(new BStringColumn("Title", 100, 100, 300,B_TRUNCATE_END), 1);
+	AddColumn(new BStringColumn("Artist", 100, 100, 300,B_TRUNCATE_END), 2);
+	AddColumn(new BStringColumn("Album", 100, 100, 300,B_TRUNCATE_END), 3);
+	AddColumn(new BStringColumn("Genre", 100, 100, 300,B_TRUNCATE_END), 4);
+	AddColumn(new BIntegerColumn("Year", 100, 100, 300), 5);
+	AddColumn(new BStringColumn("Comment", 100, 100, 300,B_TRUNCATE_END), 6);
 }
 
 PlaylistContent::~PlaylistContent() {
@@ -75,7 +81,11 @@ PlaylistContent::~PlaylistContent() {
 }
 
 void PlaylistContent::AttachedToWindow() {
+	SetTarget(this);
 
+	SetSelectionMessage(new BMessage(M_CONTENT_ON_SELECT));
+
+	BColumnListView::AttachedToWindow();
 }
 
 void PlaylistContent::MessageReceived(BMessage* message) {
@@ -93,8 +103,12 @@ void PlaylistContent::MessageReceived(BMessage* message) {
 					// Playlist TODO
 				}break;
 			}
-			
 		}
+		case M_CONTENT_ON_SELECT: {
+			Playlist::CurrentContentSelection = (PlaylistContentRow*)CurrentSelection();
+			BMessenger messenger(Control::_ArtworkView);
+			messenger.SendMessage(new BMessage('jkla'));
+		}break;
 		default: {
 			BColumnListView::MessageReceived(message);
 		}break;

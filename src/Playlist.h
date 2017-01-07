@@ -13,8 +13,11 @@
 
 #include <vector>
 
+#include "internal/PlaylistContentRow.h"
+
 enum {
-	M_PLAYLIST_ON_SELECT = 'ploa'
+	M_PLAYLIST_ON_SELECT = 'ploa',
+	M_CONTENT_ON_SELECT = 'pcoa'
 };
 
 class Playlist {
@@ -25,6 +28,8 @@ public:
 
 	static BListView* pl;
 	static BColumnListView* plc;
+
+	static PlaylistContentRow* CurrentContentSelection;
 
 	static std::vector<entry_ref> library;
 private:
