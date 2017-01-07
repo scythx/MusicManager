@@ -6,6 +6,9 @@
 #ifndef LibraryRow_H
 #define LibraryRow_H
 
+#include <String.h>
+
+#include <Bitmap.h>
 #include <ColumnTypes.h>
 #include <ColumnListView.h>
 #include <Entry.h>
@@ -13,8 +16,11 @@
 class PlaylistContentRow : public BRow {
 public:
 	PlaylistContentRow(entry_ref);
-private:
+
 	entry_ref ref;
+	BString release_id;
+	BBitmap* Artwork;
+private:
 };
 
 #endif // LibraryRow_H

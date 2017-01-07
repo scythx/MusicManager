@@ -9,7 +9,6 @@
 #include <Query.h>
 #include <Volume.h>
 #include <VolumeRoster.h>
-
 #include "Playlist.h"
 
 Query* Query::instance = NULL;
@@ -58,4 +57,3 @@ void Query::Init() {
 			}
 		}break;
 */
-
